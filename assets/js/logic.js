@@ -3,6 +3,9 @@ var currentDate = moment().format('dddd, MMMM Do, YYYY');
 //put the current date to the screen
 $("#currentDay").text(currentDate);
 
+// can I set an array to store each object?
+var hours = {};
+
 //store the current hour in 12 hr day format
 //Maybe I can use the below when I figure out how to compare that successfully to straight numbers
 //let formattedTime = new Date().toLocaleTimeString('en-US');
@@ -31,14 +34,18 @@ $(".time-block").each(function () {
 $("button").on("click", function() {
     var hour = $(this).parent().attr("id");
     var task = $(this).siblings("textarea").val().trim()
-
-    var calendarItem = localStorage.setItem(hour, task)
+    console.log(hour);
+    console.log(task)
+    hours.push({
+        hour: hour,
+        task: task
+    })
+    localStorage.setItem("hours", JSON.stringify(hours))
 })
 
-/*function loadTasks() {
-    var tasksList = localStorage.getItem(hour, task);
+function loadTasks() {
+    // assign a value for calendarItems
+    hours = JSON.parse(localStorage.getItem("hours") || "[]")
+};
 
-    if (!tasksList) {
-
-    }
-}*/
+loadTasks();

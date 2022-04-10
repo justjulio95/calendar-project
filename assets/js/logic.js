@@ -4,11 +4,9 @@ var currentDate = moment().format('dddd, MMMM Do, YYYY');
 $("#currentDay").text(currentDate);
 
 // can I set an array to store each object?
-var hours = {};
-
-//store the current hour in 12 hr day format
-//Maybe I can use the below when I figure out how to compare that successfully to straight numbers
-//let formattedTime = new Date().toLocaleTimeString('en-US');
+var calendarObj = {};
+var calendarItems = [];
+calendarObj.calendarItems = calendarItems;
 
 //store currentTime in 24 hr day format
 var currentHour = moment().hours();
@@ -32,20 +30,34 @@ $(".time-block").each(function () {
 
 //test for clicks in textarea
 $("button").on("click", function() {
-    var hour = $(this).parent().attr("id");
-    var task = $(this).siblings("textarea").val().trim()
-    console.log(hour);
-    console.log(task)
-    hours.push({
-        hour: hour,
-        task: task
-    })
-    localStorage.setItem("hours", JSON.stringify(hours))
+    //grab the hour the user wants to set a task for
+    var hour = $(this)
+    .parent()
+    .attr("id");
+
+    // grab the text that the user writes
+    var task = $(this)
+    .siblings("textarea")
+    .val()
+    .trim()
+
+    // store each item into the calendarItem's array
+    calendarItems = {
+        "hour": hour,
+        "task": task
+    };
+
+    // push it into calendarObj
+    calendarObj.calendarItems.push(calendarItems);
+
+    //and finally Store the damn thing. 
+    localStorage.setItem("calendarObj", JSON.stringify(calendarObj));
 })
+
 
 function loadTasks() {
     // assign a value for calendarItems
-    hours = JSON.parse(localStorage.getItem("hours") || "[]")
+    calendarObj = JSON.parse(localStorage.getItem("calendarObj") || "[]")
 };
 
 loadTasks();

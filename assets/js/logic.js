@@ -26,38 +26,48 @@ $(".time-block").each(function () {
     else {
         $(this).addClass("past");
     }
+
+    // grab existing data from local storage
+    var existingData = JSON.parse(localStorage.getItem("hours"));
+    //If there is already existing data
+    if (existingData) {
+        // the text in the respective "description" class will be whatever is in existingData
+        $(this).children(".description").text(existingData[calendarHour]);
+        }
 });
 
 //test for clicks in textarea
 $("button").on("click", function() {
     //grab the hour the user wants to set a task for
-    var hour = $(this)
-    .parent()
-    .attr("id");
+    var hour = $(this).parent().attr("id");
 
     // grab the text that the user writes
-    var task = $(this)
-    .siblings("textarea")
-    .val()
-    .trim()
+    var task = $(this).siblings("textarea").val().trim()
 
-    // store each item into the calendarItem's array
-    calendarItems = {
-        "hour": hour,
-        "task": task
-    };
+    // grab existingData from local storage
+    var existingData = JSON.parse(localStorage.getItem("hours"));
 
-    // push it into calendarObj
-    calendarObj.calendarItems.push(calendarItems);
-
-    //and finally Store the damn thing. 
-    localStorage.setItem("calendarObj", JSON.stringify(calendarObj));
-})
-
-
-function loadTasks() {
-    // assign a value for calendarItems
-    calendarObj = JSON.parse(localStorage.getItem("calendarObj") || "[]")
-};
-
-loadTasks();
+    // if existingData doesn't exist, create an array
+    if (!existingData) {
+        var hours = {
+            9: "",
+            10: "",
+            11: "",
+            12: "",
+            13: "",
+            14: "",
+            15: "",
+            16: "",
+            17: "",
+        };
+        // assign the task text to its respective hour
+        hours[hour] = task;
+        // set the empty array into local storage
+        localStorage.setItem("hours", JSON.stringify(hours));
+    } else {
+        // assign task text to it's respective hour
+        existingData[hour] = task;
+        // set existingData to localStorage
+        localStorage.setItem("hours", JSON.stringify(existingData))
+    }
+});

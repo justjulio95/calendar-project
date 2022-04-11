@@ -11,7 +11,6 @@ calendarObj.calendarItems = calendarItems;
 //store currentTime in 24 hr day format
 var currentHour = moment().hours();
 
-// find a way to check the below function every half hour???
 //make a function to compare current time to hour blocks
 $(".time-block").each(function () {
     // grab the listed hour to compare
@@ -33,8 +32,8 @@ $(".time-block").each(function () {
     if (existingData) {
         // the text in the respective "description" class will be whatever is in existingData
         $(this).children(".description").text(existingData[calendarHour]);
-        }
-});
+    }
+})
 
 //test for clicks in textarea
 $("button").on("click", function() {
